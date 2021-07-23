@@ -13,7 +13,7 @@ def get_inputs
 end
 
 def check_input(base, height)
-  base > 1 && height > 1
+  base.positive? && height.positive?
 end
 
 def calculate_square(base, height)
