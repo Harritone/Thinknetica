@@ -7,7 +7,7 @@ RSpec.describe Route do
   let(:station1) { Station.new('msc') }
   let(:station2) { Station.new('pkn')}
 
-  subject { described_class.new(first: first, last: last)}
+  subject { described_class.new(first, last)}
 
   describe '#initialize' do
     describe 'stations' do
@@ -27,27 +27,6 @@ RSpec.describe Route do
 
         expect(subject.instance_variable_get(:@stations).last)
           .to eq(last)
-      end
-    end
-
-    describe 'last_station' do
-      it 'should have last station' do
-        expect(subject.instance_variable_get(:@last_station))
-          .to eq(last)
-      end
-    end
-
-    describe 'first station' do
-      it 'should have first station' do
-        expect(subject.instance_variable_get(:@first_station))
-          .to eq(first)
-      end
-    end
-
-    describe 'current_station_idx' do
-      it 'should set current_station_idx to 0' do
-        expect(subject.instance_variable_get(:@current_station_idx))
-          .to eq(0)
       end
     end
   end
@@ -100,13 +79,6 @@ RSpec.describe Route do
     end
   end
 
-  describe '#current_station' do
-    it 'should return current station' do
-      expect(subject.current_station)
-        .to eq(first)
-    end
-  end
-
   describe 'remove station' do
     it 'should remove station' do
       subject.add_station(station1)
@@ -123,65 +95,6 @@ RSpec.describe Route do
 
       expect(subject.instance_variable_get(:@stations))
         .to include(first)
-    end
-  end
-
-  describe '#next_station' do
-    it 'should move to next station' do
-      init_current_station = subject.current_station
-      subject.next_station
-      expect(subject.current_station).not_to eq(init_current_station)
-      expect(subject.current_station).to eq(last)
-    end
-
-    it 'should not move to next station when at last station' do
-      subject.next_station
-      expect(subject.current_station).to eq(last)
-      subject.next_station
-      expect(subject.current_station).to eq(last)
-    end
-  end
-
-  describe '#prev_station' do
-    it 'should move to previous station' do
-      init_current_station = subject.current_station
-      subject.next_station
-      subject.prev_station
-
-      expect(subject.current_station).to eq(init_current_station)
-    end
-
-    it 'should not move to previous station when at first station' do
-      expect(subject.current_station).to eq(first)
-      subject.prev_station
-      expect(subject.current_station).to eq(first)
-    end
-  end
-
-  describe '#get_next_station' do
-    it 'should retrun next station' do
-      expect(subject.get_next_station).to eq(last)
-    end
-
-    it 'should not return next station if current station is last' do
-      subject.next_station
-      expect(subject.current_station).to eq(last)
-
-      expect(subject.get_next_station).to be_nil
-    end
-  end
-
-  describe '#get_prev_station' do
-    it 'should return previous station' do
-      subject.next_station
-
-      expect(subject.get_prev_station).to eq(first)
-    end
-
-    it 'should not return next station if current station is first' do
-      expect(subject.current_station).to eq(first)
-
-      expect(subject.get_prev_station).to be_nil
     end
   end
 end

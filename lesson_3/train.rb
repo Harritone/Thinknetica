@@ -1,12 +1,13 @@
 class Train
   attr_reader :number, :speed, :type, :carrieges_amount
 
-  def initialize(options)
-    @number = options[:number]
-    @type = options[:type]
-    @carrieges_amount = options[:carrieges_amount] || 0
+  def initialize(number:, type:, carrieges_amount:)
+    @number = number
+    @type = type
+    @carrieges_amount = carrieges_amount || 0
     @speed = 0
     @route = nil
+    @station_idx = nil
   end
 
   def speed_up(km_per_hours)
@@ -32,26 +33,34 @@ class Train
 
   def set_route(route)
     @route = route
-    route.init
+    @station_idx = 0
   end
 
   def current_station
-    @route.current_station
+    @route.stations[@station_idx]
   end
 
-  def move(direction)
-    if direction == 'forward'
-      @route.next_station
-    else
-      @route.prev_station
-    end
+  def move_forward
+    return if @station_idx == @route.stations.size + 1
+
+    @station_idx += 1
+  end
+
+  def move_backward
+    return if @station_idx.zero?
+
+    @station_idx -= 1
   end
 
   def next_station
-    @route.get_next_station
+    return if @station_idx == @route.stations.size + 1
+
+    @route.stations[@station_idx + 1]
   end
 
   def prev_station
-    @route.get_prev_station
+    return if @station_idx.zero?
+
+    @route.stations[@station_idx - 1]
   end
 end

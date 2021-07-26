@@ -10,12 +10,12 @@ class Station
     @trains << train
   end
 
-  def get_trains_by_type
-    trains = Hash.new(0)
-    @trains.each do |train|
-      train.type == 'cargo' ? trains[:cargo] += 1 : trains[:pass] += 1
-    end
-    trains
+  def get_trains_by_type(type)
+    @trains.select { |train| train.type == type }
+  end
+
+  def get_trains_amount_by_type(type)
+    get_trains_by_type(type).count
   end
 
   def depart_train(train)

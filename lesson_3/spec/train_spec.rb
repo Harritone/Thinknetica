@@ -4,10 +4,13 @@ require_relative '../route'
 
 RSpec.describe Train do
   let(:carr_amount) { 3 }
-  let(:route) { Route.new(first: Station.new('kms'), last: Station.new('msc')) }
   let(:station) { Station.new('tvr') }
+  let(:station1) { Station.new('kms') }
+  let(:station2) { Station.new('msc') }
+  let(:route) { Route.new(station1, station2) }
+
   subject do
-    described_class.new(number: 1, type: 'passanger',
+    described_class.new(number: 1, type: 'pass',
                         carrieges_amount: carr_amount)
   end
   describe '#initialize' do
@@ -16,7 +19,7 @@ RSpec.describe Train do
     end
 
     it 'should have type' do
-      expect(subject.type).to eq('passanger')
+      expect(subject.type).to eq('pass')
     end
 
     it 'should have carrieges_amount' do
@@ -94,7 +97,7 @@ RSpec.describe Train do
   end
 
   describe 'set_route' do
-    let(:route) { Route.new(first: Station.new('kms'), last: Station.new('msc')) }
+    let(:route) { Route.new(Station.new('kms'), Station.new('msc')) }
     it 'should set route' do
       subject.set_route(route)
 
@@ -107,7 +110,7 @@ RSpec.describe Train do
 
     it 'should have current_station to equal first station' do
       subject.set_route(route)
-      expect(subject.current_station).to eq(route.instance_variable_get(:@first_station))
+      expect(subject.current_station).to eq(route.stations.first)
     end
   end
 
@@ -117,34 +120,49 @@ RSpec.describe Train do
       subject.set_route(route)
     end
 
-    it 'should move forward' do
-      subject.move('forward')
+    context '#move_forward' do
+      it 'should move forward' do
+        subject.move_forward
 
-      expect(subject.current_station).to eq(station)
+        expect(subject.current_station).to eq(station)
+      end
     end
 
-    it 'should move backward' do
-      subject.move('forward')
-      subject.move('backward')
+    context '#move_backward' do
+      it 'should move backward' do
+        subject.move_forward
+        subject.move_backward
 
-      expect(subject.current_station).to eq(route.instance_variable_get(:@first_station))
+        expect(subject.current_station).to eq(station1)
+      end
     end
   end
 
   describe '#next_station' do
     it 'should return next station' do
       subject.set_route(route)
-      expect(subject.next_station).to eq(route.get_next_station)
+      expect(subject.next_station).to eq(station2)
+    end
+
+    it 'should not return next station if it is last' do
+      subject.set_route(route)
+      subject.move_forward
+      expect(subject.next_station).to be_nil
     end
   end
 
   describe '#prev_station' do
     it 'should return previous station' do
-      route.add_station(station) 
+      route.add_station(station)
       subject.set_route(route)
-      subject.move('forward')
+      subject.move_forward
 
-      expect(subject.prev_station).to eq(route.get_prev_station)
+      expect(subject.prev_station).to eq(station1)
+    end
+
+    it 'should not return previous station if it is first' do
+      subject.set_route(route)
+      expect(subject.prev_station).to be_nil
     end
   end
 end

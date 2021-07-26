@@ -48,7 +48,19 @@ RSpec.describe Station do
       subject.take_train(train1)
       subject.take_train(train2)
 
-      expect(subject.get_trains_by_type).to eq({ cargo: 2, pass: 1 })
+      expect(subject.get_trains_by_type('cargo').size).to eq(2)
+      expect(subject.get_trains_by_type('cargo'))
+        .to eq([train, train2])
+    end
+  end
+
+  describe '#get_trains_amount_by_type' do
+    it 'should return amount of trains by given type' do
+      subject.take_train(train)
+      subject.take_train(train1)
+      subject.take_train(train2)
+
+      expect(subject.get_trains_amount_by_type('cargo')).to eq(2)
     end
   end
 end
