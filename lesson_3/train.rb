@@ -43,13 +43,17 @@ class Train
   def move_forward
     return if @station_idx == @route.stations.size + 1
 
+    current_station.depart_train(self)
     @station_idx += 1
+    current_station.take_train(self)
   end
 
   def move_backward
     return if @station_idx.zero?
 
+    current_station.depart_train(self)
     @station_idx -= 1
+    current_station.take_train(self)
   end
 
   def next_station
