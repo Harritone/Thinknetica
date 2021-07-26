@@ -34,6 +34,7 @@ class Train
   def set_route(route)
     @route = route
     @station_idx = 0
+    current_station.take_train(self)
   end
 
   def current_station

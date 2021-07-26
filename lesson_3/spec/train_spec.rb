@@ -122,18 +122,31 @@ RSpec.describe Train do
 
     context '#move_forward' do
       it 'should move forward' do
-        subject.move_forward
+        cur_station = subject.current_station
+        next_station = subject.next_station
 
-        expect(subject.current_station).to eq(station)
+        expect(cur_station.trains).to include(subject)
+        expect(next_station.trains).not_to include(subject)
+        subject.move_forward
+        expect(cur_station.trains).not_to include(subject)
+        expect(next_station.trains).to include(subject)
+        expect(subject.current_station).to eq(next_station)
       end
     end
 
     context '#move_backward' do
       it 'should move backward' do
         subject.move_forward
+        station = subject.current_station
+        prev_station = subject.prev_station
+
+        expect(station.trains).to include(subject)
+
         subject.move_backward
 
-        expect(subject.current_station).to eq(station1)
+        expect(subject.current_station).to eq(prev_station)
+        expect(station.trains).not_to include(subject)
+        expect(prev_station.trains).to include(subject)
       end
     end
   end
