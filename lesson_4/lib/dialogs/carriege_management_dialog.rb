@@ -45,7 +45,8 @@ class CarriegeManagementDialog < Dialog
   end
 
   def add_carriege_to_train
-    @current_train.attach_carriege
+    carriege = Carriege.new(@current_train.type)
+    @current_train.attach_carriege(carriege)
     msg = "Carriege was successfully attached to #{@current_train.number}."
     ask_again(msg)
   end

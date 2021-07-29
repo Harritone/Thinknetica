@@ -22,9 +22,11 @@ class Train
     @speed = 0
   end
 
-  def attach_carriege
+  def attach_carriege(carriege)
     return unless speed.zero?
+    return unless carriege.type == self.type
 
+    @carrieges << carriege
   end
 
   def detach_carriege
