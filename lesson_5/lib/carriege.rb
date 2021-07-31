@@ -1,4 +1,4 @@
-require_relative './manufacturable'
+require_relative './modules/manufacturable'
 
 class Carriege
   include Manufacturable
