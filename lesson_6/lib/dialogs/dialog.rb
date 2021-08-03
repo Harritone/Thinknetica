@@ -14,6 +14,13 @@ class Dialog
 
   protected
 
+  def redirect_self
+    puts ''
+    puts 'You will be redirected to the start of the dialog.'
+    sleep(1)
+    self.call
+  end
+
   def get_input
     # do nothing
   end

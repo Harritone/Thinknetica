@@ -43,5 +43,8 @@ class RouteCreationEntryDialog < Dialog
       route = Route.new(@first_station, @last_station)
       @app_state.add_route(route)
     end
+  rescue Route::RouteStationValidationError => e
+    puts e.message
+    redirect_self
   end
 end

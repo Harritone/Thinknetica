@@ -16,9 +16,17 @@ class TrainCreationEntryDialog < Dialog
   end
 
   def handle_choice
+  begin
     train = @type == 'cargo' ? 
       CargoTrain.new(number: @number) :
       PassangerTrain.new(number: @number)
+  rescue Train::TrainNumberValidationError => e
+    puts e.message
+    redirect_self
+  rescue Train::TrainTypeValidationError => e
+    puts e.message
+    redirect_self
+  end
 
     @app_state.add_train(train)
     msg = "#{train.type} train with number #{@number} " \

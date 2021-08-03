@@ -2,6 +2,18 @@ require_relative './modules/manufacturable'
 require_relative './modules/instance_countable'
 
 class Train
+  class TrainNumberValidationError < StandardError
+    def message
+      'Number should consists of 3 letters/digits + optional "-" + 2 letters/digits'
+    end
+  end
+
+  class TrainTypeValidationError
+    def message
+      'Type should be present'
+    end
+  end
+
   include Manufacturable
   include InstanceCountable
 
@@ -18,6 +30,7 @@ class Train
   def initialize(number:, type:)
     @number = number
     @type = type
+    validate_attributes!
     @carrieges = []
     @speed = 0
     @route = nil
@@ -95,11 +108,38 @@ class Train
   # methods used inside the class should be
   # accessible inside inherited classes
 
+  def validate_attributes!
+    raise TrainNumberValidationError unless valid_number?
+    raise TrainTypeValidationError if type.nil? || type.empty?
+  end
+
+  def valid_number?
+    regexp_en = /^[A-z0-9]{3}-?[A-z0-9]{2}$/
+    regexp_ru = /^[А-я0-9]{3}-?[А-я0-9]{2}$/
+
+    return false unless !!regexp_en.match(number) || !!regexp_ru.match(number)
+
+    true
+  end
+
   def next_station_exists?
     @station_idx != @route.stations.size + 1
   end
 
   def prev_station_exists?
     @station_idx.positive?
+  end
+end
+
+require 'rspec'
+
+RSpec.describe Train do
+  it 'should validate number' do
+    expect{Train.new(number: 'dddp', type: :cargo)}.to raise_error(Train::TrainNumberValidationError)
+    expect{Train.new(number: 'ddd-p', type: :cargo)}.to raise_error(Train::TrainNumberValidationError)
+    expect{Train.new(number: 'ddd-по', type: :cargo)}.to raise_error(Train::TrainNumberValidationError)
+    expect{Train.new(number: 'РФ1-по', type: :cargo)}.not_to raise_error
+    expect{Train.new(number: 'РФ1-п1', type: :cargo)}.not_to raise_error
+    expect{Train.new(number: 'TR1-12', type: :cargo)}.not_to raise_error
   end
 end

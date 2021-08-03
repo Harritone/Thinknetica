@@ -1,6 +1,12 @@
 require_relative './modules/instance_countable'
 
 class Station
+  class StationValidationError < StandardError
+    def message
+      'Name should be present'
+    end
+  end
+
   include InstanceCountable
   @@stations = []
 
@@ -14,6 +20,7 @@ class Station
 
   def initialize(name)
     @name = name
+    validate_attributes!
     @trains = []
     @@stations << self
     register_instance
@@ -51,6 +58,10 @@ class Station
   end
   
   private
+
+  def validate_attributes
+    raise StationValidationError if name.nil? || name.empty?
+  end
 
   def show_trains
     @trains.map(&:number).join(', ')
