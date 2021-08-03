@@ -1,8 +1,13 @@
+require_relative './modules/instance_countable'
+
 class Route
+  include InstanceCountable
+
   attr_reader :stations
 
   def initialize(first, last)
     @stations = [first, last]
+    register_instance
   end
 
   def add_station(station, idx = 1)

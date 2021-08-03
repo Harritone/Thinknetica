@@ -1,9 +1,22 @@
+require_relative './modules/instance_countable'
+
 class Station
+  include InstanceCountable
+  @@stations = []
+
   attr_reader :name, :trains
+
+  class << self
+    def all
+      @@stations
+    end
+  end
 
   def initialize(name)
     @name = name
     @trains = []
+    @@stations << self
+    register_instance
   end
 
   def to_s

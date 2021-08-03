@@ -1,5 +1,19 @@
+require_relative './modules/manufacturable'
+require_relative './modules/instance_countable'
+
 class Train
+  include Manufacturable
+  include InstanceCountable
+
   attr_reader :number, :speed, :type, :carrieges, :route
+
+  @@trains = []
+
+  class << self
+    def find_by_number(number)
+      @@trains.detect { |t| t.number == number }
+    end
+  end
 
   def initialize(number:, type:)
     @number = number
@@ -8,6 +22,8 @@ class Train
     @speed = 0
     @route = nil
     @station_idx = nil
+    @@trains << self
+    register_instance
   end
 
   def to_s
