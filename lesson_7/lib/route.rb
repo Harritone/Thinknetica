@@ -37,15 +37,15 @@ class Route
 
   # methods used within the class
 
-  def validate_attributes
+  def validate_attributes!
     raise RouteStationValidationError unless stations_valid?
   end
 
   def stations_valid?
     return false if @stations.first.nil? ||
-                    @stations.first.empty? ||
-                    @stations.last.nil? ||
-                    @stations.last.empty?
+                    # @stations.first.empty? ||
+                    @stations.last.nil? 
+                    # @stations.last.empty?
     true
   end
 

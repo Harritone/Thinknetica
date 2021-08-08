@@ -12,6 +12,8 @@ class CarriegeManagementDialog < Dialog
     puts 'Choose the train:'
     puts ''
     show_trains
+    puts 'Choose the carriege'
+    # show_carrieges
   end
 
   def handle_choice
@@ -20,15 +22,20 @@ class CarriegeManagementDialog < Dialog
 
   def show_trains
     trains = @app_state.trains
-    # trains.each_with_index do |train, i|
-    #   puts "#{i + 1}. Train: type - #{train.type}, number -  #{train.number}," \
-    #     " current speed - #{train.speed}, carrieges - #{train.carrieges.size}."
-    # end
     render_collection(trains)
 
     @current_choice = check_choice(gets.chomp).to_i
     @current_train = trains[@current_choice - 1]
+    @current_type = @current_train.type
     check_train_availability
+  end
+
+  def show_carrieges
+    puts 'Choose the carriege'
+    carrieges = @app_state.get_carrieges_by_type(@current_type)
+
+    render_collection(carrieges)
+    @current_carriege = check_choice(gets.chomp).to_i
   end
 
   def manage_carriege
@@ -37,22 +44,49 @@ class CarriegeManagementDialog < Dialog
     puts ''
     puts '1. Add carriege'
     puts '2. Remove carriege'
+    puts '3. Fill the space of the carriege'
 
     @current_choice = check_choice(gets.chomp).to_i
     add_carriege_to_train if @current_choice == 1
     remove_carriege_from_train if @current_choice == 2
+    fill_space if @current_choice == 3
     self.call
   end
 
+  def fill_space
+    carrieges = @current_train.carrieges
+    puts 'Choose the carriege to fill'
+    render_collection(carrieges)
+    idx = check_choice(gets.chomp).to_i
+    @current_carriege = carrieges[idx - 1]
+    @current_type == :cargo ? fill_cargo_carriege : fill_pass_carriege
+  end
+
+  def fill_cargo_carriege
+    puts 'Input the volume to fill'
+    space = check_choice(gets.chomp).to_i
+    @current_carriege.add_volume(space)
+    puts "Carriege was filled by #{space}!"
+    sleep(1)
+  end
+
+  def fill_pass_carriege
+    @current_carriege.take_seat
+    puts '1 seat was taken!'
+    sleep(1)
+  end
+
   def add_carriege_to_train
-    carriege = Carriege.new(@current_train.type)
-    @current_train.attach_carriege(carriege)
+    show_carrieges
+    @app_state.remove_carriege(@current_carriege)
+    @current_train.attach_carriege(@current_carriege)
     msg = "Carriege was successfully attached to #{@current_train.number}."
     ask_again(msg)
   end
 
   def remove_carriege_from_train
-    @current_train.detach_carriege
+    carriege = @current_train.detach_carriege
+    app_state.add_carriege(carriege)
     msg = "Carriege was successfully detached from #{@current_train.number}."
     ask_again(msg)
   end

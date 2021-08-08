@@ -39,8 +39,12 @@ class Train
     register_instance
   end
 
+  def with_carrieges(&blk)
+    @carrieges.each_with_index { |carriege, i| yield(carriege, i) }
+  end
+
   def to_s
-    "Train: number - #{@number}, type - #{@type}, carrieges - #{@carrieges.count}, route - #{@route || 'not assigned'}"
+    "Train: number - #{@number}, type - #{@type}, carrieges - #{carrieges.count}, route - #{@route || 'not assigned'}"
   end
 
   def speed_up(km_per_hours)

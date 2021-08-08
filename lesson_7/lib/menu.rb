@@ -32,7 +32,7 @@ class Menu
     puts '5. Set route to train'
     puts '6. Carriege management'
     puts '7. Move trains'
-    puts '9. Show stations and trains at stations'
+    puts '8. Show stations and trains at stations'
     puts ''
     puts '*' * 80
 
