@@ -1,0 +1,18 @@
+require_relative 'lib/menu'
+require_relative 'lib/cargo_train'
+require_relative 'lib/passanger_train'
+require_relative 'lib/cargo_carriege'
+require_relative 'lib/passanger_carriege'
+require_relative 'lib/station'
+require_relative 'lib/route'
+require_relative 'lib/state/app_state'
+require_relative 'lib/dialogs/station_creation_entry_dialog'
+require_relative 'lib/dialogs/train_creation_entry_dialog'
+require_relative 'lib/dialogs/route_creation_entry_dialog'
+require_relative 'lib/dialogs/route_management_dialog'
+require_relative 'lib/dialogs/carriege_management_dialog'
+require_relative 'lib/dialogs/train_routes_management_dialog'
+require_relative 'lib/dialogs/trains_movement_dialog'
+require_relative 'lib/dialogs/show_stations_dialog'
+
+Menu.new.call
