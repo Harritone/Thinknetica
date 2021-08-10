@@ -13,7 +13,7 @@ class StationCreationEntryDialog < Dialog
   def handle_choice
     clear
   begin
-    @app_state.add_station(Station.new(@name))
+    station = Station.new(@name)
   rescue StationValidationError => e
     puts e.message
     render_self

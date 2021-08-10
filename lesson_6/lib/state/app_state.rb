@@ -5,19 +5,16 @@ class AppState
   end
 
   def seed
-    khv =  Station.new('khv')
+    khv = Station.new('khv')
     kms = Station.new('kms')
-    msk =  Station.new('msk')
+    msk = Station.new('msk')
     pkn = Station.new('pkn')
     @stations << khv << kms << msk << pkn
-
     @routes << Route.new(khv, pkn)
     @routes << Route.new(khv, kms)
     @routes << Route.new(kms, khv)
-
     @trains << CargoTrain.new(number: '123')
     @trains << PassangerTrain.new(number: '133')
-
     @trains.first.set_route(@routes.first)
   end
 
@@ -48,5 +45,4 @@ class AppState
     @trains = []
     @routes = []
   end
-
 end

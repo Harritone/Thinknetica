@@ -28,10 +28,10 @@ class TrainCreationEntryDialog < Dialog
     redirect_self
   end
 
-  @app_state.add_train(train)
-  msg = "#{train.type} train with number #{@number} " \
-    'was successfuly created'
+    @app_state.add_train(train)
+    msg = "#{train.type} train with number #{@number} " \
+      'was successfuly created'
 
-  ask_again(msg)
+    ask_again(msg)
   end
 end

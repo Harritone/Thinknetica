@@ -30,6 +30,10 @@ class Station
     "Station #{@name}, trains on station: #{@trains.count}"
   end
 
+  def each_with_train(&blk)
+    @trains.each { |t| yield(t)}
+  end
+
   def info
     puts self.to_s
     puts ''
@@ -56,10 +60,10 @@ class Station
   def depart_train(train)
     @trains.delete(train)
   end
-
+  
   private
 
-  def validate_attributes
+  def validate_attributes!
     raise StationValidationError if name.nil? || name.empty?
   end
 
