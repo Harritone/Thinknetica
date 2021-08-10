@@ -43,9 +43,10 @@ class Route
 
   def stations_valid?
     return false if @stations.first.nil? ||
-                    # @stations.first.empty? ||
-                    @stations.last.nil? 
-                    # @stations.last.empty?
+                    @stations.first.name.empty? ||
+                    @stations.last.nil? ||
+                    @stations.last.name.empty?
+
     true
   end
 

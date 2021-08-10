@@ -43,7 +43,7 @@ class ShowStationsDialog < Dialog
       puts '*' * 80
       puts t
       puts ''
-      puts "Carrieges info:"
+      puts 'Carrieges info:'
       t.with_carrieges do |c, i|
         puts "\t#{i + 1}. #{c}."
       end

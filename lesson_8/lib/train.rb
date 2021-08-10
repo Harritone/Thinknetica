@@ -39,7 +39,7 @@ class Train
     register_instance
   end
 
-  def with_carrieges(&blk)
+  def with_carrieges(&_blk)
     @carrieges.each_with_index { |carriege, i| yield(carriege, i) }
   end
 
@@ -64,7 +64,7 @@ class Train
 
   def detach_carriege
     return unless speed.zero? &&
-      @carrieges.size.positive?
+                  @carrieges.size.positive?
 
     @carrieges.pop
   end
@@ -132,18 +132,5 @@ class Train
 
   def prev_station_exists?
     @station_idx.positive?
-  end
-end
-
-require 'rspec'
-
-RSpec.describe Train do
-  it 'should validate number' do
-    expect{Train.new(number: 'dddp', type: :cargo)}.to raise_error(Train::TrainNumberValidationError)
-    expect{Train.new(number: 'ddd-p', type: :cargo)}.to raise_error(Train::TrainNumberValidationError)
-    expect{Train.new(number: 'ddd-по', type: :cargo)}.to raise_error(Train::TrainNumberValidationError)
-    expect{Train.new(number: 'РФ1-по', type: :cargo)}.not_to raise_error
-    expect{Train.new(number: 'РФ1-п1', type: :cargo)}.not_to raise_error
-    expect{Train.new(number: 'TR1-12', type: :cargo)}.not_to raise_error
   end
 end

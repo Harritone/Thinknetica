@@ -92,13 +92,12 @@ class CarriegeManagementDialog < Dialog
   end
 
   def check_train_availability
-    if @current_train.speed.positive?
-      clear
-      puts 'You should stop the train to add/remove carriege.'
-      puts 'You will be redirected to the start of the dialog.'
-      sleep(1)
-      self.call
-    end
-    # do nothing
+    return unless @current_train.speed.positive?
+
+    clear
+    puts 'You should stop the train to add/remove carriege.'
+    puts 'You will be redirected to the start of the dialog.'
+    sleep(1)
+    self.call
   end
 end

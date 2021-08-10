@@ -112,12 +112,12 @@ class RouteManagementDialog < Dialog
   end
 
   def check_stations_amount
-    if @current_route.stations.size <= 2
-      clear
-      puts 'There is too low stations to remove.'
-      puts 'You will be redirected to the start of the dialog.'
-      sleep(1)
-      self.call
-    end
+    return unless @current_route.stations.size <= 2
+
+    clear
+    puts 'There is too low stations to remove.'
+    puts 'You will be redirected to the start of the dialog.'
+    sleep(1)
+    self.call
   end
 end

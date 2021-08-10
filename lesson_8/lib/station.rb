@@ -60,7 +60,7 @@ class Station
   def depart_train(train)
     @trains.delete(train)
   end
-  
+
   private
 
   def validate_attributes!
