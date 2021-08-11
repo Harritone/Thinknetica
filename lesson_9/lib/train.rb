@@ -1,5 +1,6 @@
 require_relative './modules/manufacturable'
 require_relative './modules/instance_countable'
+require_relative './modules/validatable'
 
 class Train
   class TrainNumberValidationError < StandardError
@@ -14,10 +15,17 @@ class Train
     end
   end
 
+  FORMAT = /^[A-z0-9]{3}-?[A-z0-9]{2}$/.freeze
+
   include Manufacturable
   include InstanceCountable
+  include Validatable
 
   attr_reader :number, :speed, :type, :carrieges, :route
+
+  validate :number, :presence
+  validate :number, :format, FORMAT
+  validate :type, :presence
 
   @@trains = []
 
@@ -30,7 +38,7 @@ class Train
   def initialize(number:, type:)
     @number = number
     @type = type
-    validate_attributes!
+    # validate_attributes!
     @carrieges = []
     @speed = 0
     @route = nil

@@ -1,4 +1,5 @@
 require_relative './modules/instance_countable'
+require_relative './modules/validatable'
 
 class Station
   class StationValidationError < StandardError
@@ -8,9 +9,13 @@ class Station
   end
 
   include InstanceCountable
+  include Validatable
+
   @@stations = []
 
   attr_reader :name, :trains
+
+  validate :name, :presence
 
   class << self
     def all
@@ -20,7 +25,7 @@ class Station
 
   def initialize(name)
     @name = name
-    validate_attributes!
+    # validate_attributes!
     @trains = []
     @@stations << self
     register_instance
